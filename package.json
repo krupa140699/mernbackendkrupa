@@ -1,0 +1,17 @@
+{
+    "name": "backend_node_practice",
+    "version": "3.0.1",
+    "private": true,
+    "description": "",
+    "scripts": {
+        "start": ""
+    },
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.1",
+        "mongoose": "^7.3.4",
+        "nodemailer": "^6.9.3",
+        "nodemon": "^3.0.1"
+    }
+}
