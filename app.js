@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose  = require('mongoose');
-const DB = 'mongodb+srv://krupabhatt14061999:Krupa%401406@cluster0.5lbqkpo.mongodb.net/'
 const app = express();
+require('dotenv').config()
 
 const connectionParams={
   useNewUrlParser: true,
@@ -9,7 +9,7 @@ const connectionParams={
   useUnifiedTopology: true 
 }
 
-mongoose.connect(DB).then(() =>{
+mongoose.connect(process.env.MONGO_DB).then(() =>{
   console.log('connection successfull')
 }).catch((err)=>console.log('no connection'))
 require('./routes')(app);
