@@ -1,10 +1,11 @@
-exports.getUsers = async function () {
+const User = require("../model/User");
+
+exports.checkEmail = async function (email) {
 
     try {
-        var users = await {user: 'user data'}
-        return users;
-    } catch (e) {
-        // Log Errors
-        throw Error('Error while Paginating Users')
-    }
+        const checkEmail = await User.find({ email: email });
+        return checkEmail;
+      } catch (error) {
+        throw error;
+      }
 }
