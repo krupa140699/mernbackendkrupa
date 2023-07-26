@@ -7,7 +7,8 @@ const Jwt = require('jsonwebtoken');
 const jwtkey = 'e-comm'
 const UserService = require("../services/user.service");
 const { Validator } = require("node-input-validator");
-
+app.use(express.json())
+app.use(cors());
 
 exports.register = async function (req, res, next) {
 
