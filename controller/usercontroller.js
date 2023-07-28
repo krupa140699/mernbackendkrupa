@@ -3,10 +3,10 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const app = express();
 const User = require('../model/User');
-const Jwt = require('jsonwebtoken');
-const jwtkey = 'e-comm'
 const UserService = require("../services/user.service");
 const { Validator } = require("node-input-validator");
+const Jwt = require('jsonwebtoken');
+const jwtkey = 'e-comm'
 app.use(express.json())
 app.use(cors());
 
@@ -54,7 +54,7 @@ exports.register = async function (req, res, next) {
 
 
 
-exports.login = async function(req, res, next) {
+exports.login = async function (req, res, next) {
 
     try {
         var message = "Login sucessfully.";
@@ -67,9 +67,7 @@ exports.login = async function(req, res, next) {
         if (!matched) {
             return res.status(404).send(v.errors);
         }
-
         const checkEmail = await UserService.checkEmail(req.body.email);
-
 
         if (checkEmail.length == 0) {
             message = "Email does not exist.";
