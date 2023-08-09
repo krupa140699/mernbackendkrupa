@@ -6,6 +6,8 @@ const User = require('../model/User');
 const UserService = require("../services/user.service");
 const { Validator } = require("node-input-validator");
 const Jwt = require('jsonwebtoken');
+const Otp = require('../model/Otp');
+const EmailSenderClass = require('./mailController');
 const jwtkey = 'e-comm'
 app.use(express.json())
 app.use(cors());
@@ -98,3 +100,92 @@ exports.login = async function (req, res, next) {
             .json({ success: false, message: "Something went to wrong." });
     }
 }
+
+
+exports.emailSend = async function (req, res, next) {
+    try {
+        const v = new Validator(req.body, {
+            email: "required",
+        });
+
+        const matched = await v.check();
+        if (!matched) {
+            return res.status(404).send(v.errors);
+        }
+        const checkEmail = await UserService.checkEmail(req.body.email);
+        console.log(checkEmail)
+        if (checkEmail.length != 0) {
+            let Otpcode = Math.floor((Math.random() * 10000 + 1));
+            let otpData = new Otp({
+                email: req.body.email,
+                code: Otpcode,
+                expireIn: new Date().getTime() + 300 * 1000
+            });
+            let otpResponse = await otpData.save();
+            var html = './view/ForgetPasswordcode.ejs'
+            var user_forgot_password_data = {
+                otp: Otpcode,
+                title: 'Forgot Password'
+            }
+            await EmailSenderClass.EmailSender(user_forgot_password_data, html, req.body.email);
+            return res.status(200).json({
+                success: true,
+                data: [],
+                message: "OTP send successfully Please check your email.",
+            });
+        }else{
+            return res
+            .status(401)
+            .json({ success: false, message: "Email is not exist" });
+        }
+
+    } catch (error) {
+        return res
+            .status(401)
+            .json({ success: false, message: "Something went to wrong." });
+    }
+}
+
+
+exports.changePassword = async function (req, res, next) {
+
+    try {
+        const v = new Validator(req.body, {
+            password: "required",
+        });
+
+        const matched = await v.check();
+        if (!matched) {
+            return res.status(404).send(v.errors);
+        }
+        let  data = await Otp.find({email: req.body.email,code: req.body.otpCode});
+        if(data){
+            let currentTime = new Date().getTime();
+            let diff = data.expireIn - currentTime 
+            if(diff < 0){
+                return res
+                .status(401)
+                .json({ data: [], success: false, message: 'Token expire' });
+            }else{
+                let  user = await User.findOne({email: req.body.email}); 
+                user.password = req.body.password;
+                user.save();
+                return res.status(200).json({
+                    success: true,
+                    data: [],
+                    message: "Password change successfully.",
+                  });
+            }
+        }else{
+            return res
+            .status(401)
+            .json({ success: false, message: "Invalid OTP." });  
+        }
+
+    } catch (error) {
+        return res
+            .status(404)
+            .json({ success: false, message: "Something went to wrong." });
+    }
+}
+
