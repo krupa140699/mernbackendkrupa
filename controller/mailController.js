@@ -1,23 +1,47 @@
 const nodemailer = require("nodemailer");
+var ejs = require("ejs");
 
 
-exports.sendMails = async function (req, res, next) {
-   const transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      auth: {
-         user: 'esther76@ethereal.email',
-         pass: 'GQ72M9b7bRkBZB6G87'
+module.exports = class EmailSenderClass {
+   static async EmailSender(email_data, template_location, to) {
+
+      let aPromice = new Promise(function (resolve, reject) {
+         try {
+            const transporter = nodemailer.createTransport({
+               host: "smtp.ethereal.email",
+               port: 587,
+               auth: {
+                  user: 'ryder71@ethereal.email',
+                  pass: 'xQjCw3ZVuec3avJ6zc'
+              }
+            });
+            ejs.renderFile(template_location, email_data, function (err, data) {
+               if (err) {
+               } else {
+                  transporter.sendMail({
+                     from: 'ryder71@ethereal.email', // sender address
+                     to: "krupa.bhatt@cmarix.com",
+                     subject: "Otp for reset password", // Subject line
+                     text: '', // plain text body
+                     html: data, // html body
+                  }, function (err, info) {
+                     if (err) {
+                        reject(err);
+                     } else {
+                        resolve(info.response);
+                     }
+
+                  });
+               }
+
+
+            })
+         } catch (error) {
+            reject(error);
+         }
       }
-   });
-   console.log('mail receive')
+      )
+      return aPromice;
+   }
 
-   const info = transporter.sendMail({
-      from: '"Fred Foo 👻" <esther76@ethereal.email>', // sender address
-      to: "krupa.bhatt@cmarix.com",
-      subject: "Hello ✔", // Subject line
-      text: "Hello world?", // plain text body
-      html: "<b>Hello world?</b>", // html body
-   });
-
-   console.log('mail send')
 }

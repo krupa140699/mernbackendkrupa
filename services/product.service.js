@@ -1,4 +1,5 @@
 const Product = require("../model/Product");
+const ProductCategory = require("../model/ProductCategory");
 
 exports.add = async function (data) {
 
@@ -17,16 +18,16 @@ exports.list = async function () {
     try {
         var aggregate = Product.aggregate([
             {
-              $project: {
-                _id: 1,
-                name: 1,
-                price: 1,
-                category: 1,
-                userId: 1,
-                company: 1,
-              },
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    price: 1,
+                    category: 1,
+                    userId: 1,
+                    company: 1,
+                },
             },
-          ]);
+        ]);
         return aggregate;
     } catch (error) {
         throw error;
@@ -86,3 +87,5 @@ exports.search = async function (key) {
         throw error;
     }
 }
+
+
