@@ -19,11 +19,20 @@ exports.productCategoryList = async function () {
     try {
         var aggregate = ProductCategory.aggregate([
             {
-                $project: {
-                    _id: 1,
-                    category: 1
+                $lookup: {
+                    from: 'products',
+                    localField: '_id',
+                    foreignField: 'category',
+                    as: 'categories'
                 },
             },
+            {
+                $project: {
+                    _id: 1,
+                    category: 1,
+                    categories: 1
+                }, 
+            }
         ]);
         return aggregate;
     } catch (error) {

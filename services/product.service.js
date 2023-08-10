@@ -25,6 +25,7 @@ exports.list = async function () {
                     category: 1,
                     userId: 1,
                     company: 1,
+                    selectedImages: 1,
                 },
             },
         ]);

@@ -10,6 +10,7 @@ module.exports.addProduct = async function (req, res, next) {
       category: "required",
       userId: "required",
       company: "required",
+      selectedImages: "required"
     });
 
     const matched = await v.check();
