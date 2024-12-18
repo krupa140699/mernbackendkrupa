@@ -6,7 +6,8 @@ const tokenValidate = require("../middleware/tokencheck");
 const usercontroller = require('../controller/usercontroller.js')
 const mailController = require('../controller/mailController.js')
 const productController = require('../controller/productController.js')
-const productCategoryController = require('../controller/productCategoryController')
+const productCategoryController = require('../controller/productCategoryController');
+const { googleAuth } = require("../controller/authController.js");
 
 
 router.post('/register', usercontroller.register);
@@ -38,6 +39,8 @@ router.get('/search/:key', tokenValidate(), productController.searchProduct);
 router.delete('/productCategory/:id', tokenValidate(), productCategoryController.deleteProductCategory);
 
 router.get('/sendmail', mailController.EmailSender);
+
+router.get("/google", googleAuth);
 
 module.exports = router;
 
