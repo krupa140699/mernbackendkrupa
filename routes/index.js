@@ -1,6 +1,9 @@
 var express = require("express");
 var router = express.Router();
 const tokenValidate = require("../middleware/tokencheck");
+var express = require("express");
+var router = express.Router();
+const tokenValidate = require("../middleware/tokencheck");
 
 // module.exports = function(app){
 const usercontroller = require('../controller/usercontroller.js')
