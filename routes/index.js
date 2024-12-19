@@ -3,7 +3,7 @@ var router = express.Router();
 const tokenValidate = require("../middleware/tokencheck");
 var express = require("express");
 var router = express.Router();
-const tokenValidate = require("../middleware/tokencheck");
+
 
 // module.exports = function(app){
 const usercontroller = require('../controller/usercontroller.js')
@@ -43,7 +43,7 @@ router.delete('/productCategory/:id', tokenValidate(), productCategoryController
 
 router.get('/sendmail', mailController.EmailSender);
 
-router.get("/google", googleAuth);
+router.get("/auth/google", googleAuth);
 
 module.exports = router;
 

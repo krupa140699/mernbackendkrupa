@@ -13,7 +13,6 @@ exports.googleAuth = async (req, res, next) => {
             `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`
         );
         const { email, name, picture } = userRes.data;
-        console.log(userRes);
         let user = await authUser.findOne({ email });
 
         if (!user) {
@@ -24,7 +23,7 @@ exports.googleAuth = async (req, res, next) => {
             });
         }
         const { _id } = user;
-        const token = jwt.sign({ _id, email },
+        const token = jwt.sign({ _id, email },process.env.JWT_SECRET,
            {
             expiresIn: process.env.JWT_TIMEOUT,
         });
